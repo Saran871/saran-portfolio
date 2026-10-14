@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sarankumar S — Full-stack developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F5F2; --surface:#FFFFFF; --ink:#18261F; --muted:#56655D;
+  --line:#D6DDD8; --moss:#2F6B4F; --moss-soft:#E3EEE7; --field:#EEF3F8;
+  --amber:#B97A10; --focus:#2F6B4F;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Instrument Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121915; --surface:#1A231E; --ink:#E6ECE8; --muted:#9DAEA4;
+    --line:#2C3832; --moss:#7CC39F; --moss-soft:#22352B; --field:#1F2A33;
+    --amber:#E8B04A; --focus:#7CC39F; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121915; --surface:#1A231E; --ink:#E6ECE8; --muted:#9DAEA4;
+  --line:#2C3832; --moss:#7CC39F; --moss-soft:#22352B; --field:#1F2A33;
+  --amber:#E8B04A; --focus:#7CC39F; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--moss)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
+
+/* Nav */
+header.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:1rem}
+.brand{font:800 1.15rem/1 var(--display);color:var(--ink);text-decoration:none}
+.nav ul{list-style:none;display:flex;gap:.25rem;margin:0;padding:0;overflow-x:auto}
+.nav ul a{display:block;padding:.4rem .7rem;border-radius:999px;color:var(--muted);text-decoration:none;font-size:.95rem;font-weight:500;white-space:nowrap}
+.nav ul a:hover{color:var(--ink)}
+.nav ul a.active{background:var(--moss-soft);color:var(--moss)}
+@media (max-width:640px){.brand{display:none}.nav .wrap{justify-content:center}}
+
+/* Hero */
+.hero{padding:4.5rem 0 3.5rem}
+.hero .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center}
+.hero h1{font:800 clamp(2.6rem,6.5vw,4.6rem)/1.02 var(--display);letter-spacing:-.02em;margin:0 0 1.25rem}
+.hero p.lede{font-size:1.2rem;color:var(--muted);max-width:34ch;margin:0 0 2rem}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.3rem;border-radius:10px;font:600 1rem/1 var(--body);text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);background:transparent;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn:hover{transform:translateY(-1px)}
+
+/* The form card: the signature element */
+.formcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:1.5rem;box-shadow:0 18px 40px -24px color-mix(in srgb,var(--ink) 45%,transparent)}
+.formcard .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;font-size:.9rem;color:var(--muted)}
+.formcard .bar strong{color:var(--ink);font-weight:600}
+.field{margin-bottom:.9rem}
+.field label{display:block;font-size:.85rem;font-weight:600;color:var(--muted);margin-bottom:.3rem}
+.input{position:relative;display:flex;align-items:center;min-height:44px;padding:.55rem .85rem;background:var(--field);border:1.5px solid transparent;border-radius:9px;font-size:1rem;transition:border-color .2s}
+.input.typing{border-color:var(--moss)}
+.input .val{flex:1}
+.input .caret{display:inline-block;width:2px;height:1.1em;background:var(--moss);margin-left:1px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+.input .ok{width:20px;height:20px;border-radius:50%;background:var(--moss);color:var(--surface);display:grid;place-items:center;font-size:.75rem;opacity:0;transform:scale(.6);transition:.25s}
+.input.done .ok{opacity:1;transform:none}
+.select::after{content:"";position:absolute;right:2.6rem;top:50%;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-70%) rotate(45deg)}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.chip{font-size:.85rem;padding:.2rem .6rem;border-radius:6px;background:var(--moss-soft);color:var(--moss);font-weight:500;opacity:0;transition:opacity .3s}
+.chip.on{opacity:1}
+.submit{margin-top:1.1rem;width:100%;padding:.8rem;border:0;border-radius:9px;background:var(--moss);color:var(--surface);font:600 1rem var(--body);opacity:.35;transition:opacity .3s;cursor:pointer}
+.submit.ready{opacity:1}
+@keyframes blink{50%{opacity:0}}
+
+/* Sections */
+section.block{padding:4.5rem 0;border-top:1px solid var(--line)}
+h2{font:800 clamp(1.9rem,4vw,2.6rem)/1.1 var(--display);letter-spacing:-.015em;margin:0 0 .6rem}
+.sub{color:var(--muted);max-width:60ch;margin:0 0 2.5rem}
+
+/* About */
+.about{display:grid;grid-template-columns:1.4fr 1fr;gap:3rem}
+.about p{max-width:62ch;margin:0 0 1rem}
+.facts{display:grid;gap:1rem;align-content:start}
+.fact{padding:1rem 1.2rem;border-left:3px solid var(--moss);background:var(--surface);border-radius:0 10px 10px 0}
+.fact b{display:block;font:700 1.6rem/1.1 var(--display)}
+.fact span{color:var(--muted);font-size:.95rem}
+
+/* Skills */
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:2rem}
+.skills h3{font:600 1.15rem var(--display);margin:0 0 .75rem}
+.skills ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:.4rem}
+.skills li{padding:.3rem .7rem;border:1px solid var(--line);border-radius:7px;font-size:.95rem;background:var(--surface)}
+
+/* Timeline */
+.timeline{position:relative;margin:0;padding:0;list-style:none}
+.timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.timeline > li{position:relative;padding:0 0 2.5rem 2.5rem}
+.timeline > li:last-child{padding-bottom:0}
+.timeline > li::before{content:"";position:absolute;left:0;top:6px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--moss)}
+.timeline > li.current::before{background:var(--moss)}
+.when{font-size:.9rem;color:var(--muted);font-weight:500}
+.timeline h3{font:700 1.3rem/1.25 var(--display);margin:.2rem 0 .1rem}
+.org{color:var(--moss);font-weight:600;margin-bottom:.6rem}
+.timeline ul.points{margin:0;padding-left:1.1rem;max-width:68ch}
+.timeline ul.points li{margin-bottom:.3rem}
+details.more summary{cursor:pointer;color:var(--moss);font-weight:600;margin-top:.5rem;width:max-content}
+
+/* Projects */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
+.filters button{font:500 .95rem var(--body);padding:.45rem .95rem;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.projects{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+.project{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column}
+.project.featured{grid-column:1/-1;border-color:var(--moss);display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem}
+.project h3{font:700 1.35rem/1.2 var(--display);margin:0 0 .25rem}
+.project .meta{color:var(--muted);font-size:.9rem;margin-bottom:.8rem}
+.project p{margin:0 0 1rem}
+.project ul{margin:0 0 1rem;padding-left:1.1rem}
+.stack{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto}
+.stack span{font-size:.82rem;padding:.18rem .55rem;border-radius:6px;background:var(--moss-soft);color:var(--moss);font-weight:500}
+.project[hidden]{display:none}
+.empty{color:var(--muted)}
+
+/* Education */
+.edu{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem}
+.edu div{padding:1.2rem;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.edu b{display:block;font:700 1.15rem var(--display)}
+.edu span{color:var(--muted);font-size:.95rem}
+
+/* Contact */
+.contact{background:var(--ink);color:var(--bg);border-radius:22px;padding:clamp(2rem,5vw,3.5rem)}
+.contact h2{color:var(--bg)}
+.contact p{color:color-mix(in srgb,var(--bg) 75%,transparent);max-width:50ch}
+.contact .btn{border-color:var(--bg);color:var(--bg)}
+.contact .btn.primary{background:var(--bg);color:var(--ink)}
+.toast{margin-top:1rem;min-height:1.5em;font-weight:500}
+footer{padding:2.5rem 0;color:var(--muted);font-size:.9rem;text-align:center}
+
+@media (max-width:860px){
+  .hero .wrap,.about,.project.featured{grid-template-columns:1fr}
+  .hero{padding-top:3rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <nav class="wrap" aria-label="Main">
+    <a class="brand" href="#home">Saran.</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="wrap">
+    <div>
+      <h1>Sarankumar S builds the forms that business data runs on.</h1>
+      <p class="lede">Full-stack developer working in React, TypeScript and Node.js. Currently building ESG data-collection tools at APA Engineering.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See projects</a>
+        <a class="btn" href="https://github.com/Saran871" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+
+    <form class="formcard" aria-label="Developer profile, filled in automatically" onsubmit="event.preventDefault();location.hash='contact'">
+      <div class="bar"><strong>Developer profile</strong><span id="progress">0 of 4 fields</span></div>
+      <div class="field">
+        <label>Name</label>
+        <div class="input" data-text="Sarankumar S"><span class="val"></span><span class="ok" aria-hidden="true">✓</span></div>
+      </div>
+      <div class="field">
+        <label>Role</label>
+        <div class="input select" data-text="Programmer Analyst"><span class="val"></span><span class="ok" aria-hidden="true">✓</span></div>
+      </div>
+      <div class="field">
+        <label>Experience</label>
+        <div class="input" data-text="6+ years, since 2018"><span class="val"></span><span class="ok" aria-hidden="true">✓</span></div>
+      </div>
+      <div class="field">
+        <label>Core stack</label>
+        <div class="chips" id="heroChips">
+          <span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Redux</span><span class="chip">Node.js</span><span class="chip">PostgreSQL</span><span class="chip">Azure MSAL</span>
+        </div>
+      </div>
+      <button class="submit" id="heroSubmit" type="submit">Get in touch</button>
+    </form>
+  </div>
+</section>
+
+<section class="block" id="about">
+  <div class="wrap about">
+    <div>
+      <h2>About</h2>
+      <p>I started my career in 2018 maintaining ERP screens in VB 6.0 and SQL Server, and moved into modern web development with React and Node.js. Since then I've built leave-management tools, video-consultation dashboards, travel booking flows and, most recently, a platform that collects and validates ESG data against GRI, SASB and CDP frameworks.</p>
+      <p>My strongest work is on the front end: dynamic forms, cascading dropdowns, schema validation with Zod, and state that stays predictable with Redux. I also write the APIs behind them in Express with JWT and PostgreSQL, and wire up secure sign-in with Azure MSAL.</p>
+      <p>I'm looking for a team where I can take on harder problems and keep growing as an engineer.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><b id="yearsFact">6+ years</b><span>building software professionally</span></div>
+      <div class="fact"><b>4 companies</b><span>from ERP support to full-stack product work</span></div>
+      <div class="fact"><b>M.Sc (CS &amp; IT)</b><span>MTNC College, Madurai</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="skills">
+  <div class="wrap">
+    <h2>Skills</h2>
+    <p class="sub">The tools I use day to day, grouped by where they sit in the stack.</p>
+    <div class="skills">
+      <div><h3>Front end</h3><ul><li>React.js</li><li>TypeScript</li><li>JavaScript</li><li>Redux</li><li>React Router</li><li>React Hook Form</li><li>Zod</li><li>Axios</li><li>HTML</li><li>CSS</li></ul></div>
+      <div><h3>UI libraries</h3><ul><li>Material UI</li><li>Bootstrap</li><li>React Bootstrap</li><li>Reactstrap</li></ul></div>
+      <div><h3>Back end</h3><ul><li>Node.js</li><li>Express.js</li><li>PostgreSQL</li><li>MySQL</li><li>JWT authentication</li><li>Azure MSAL</li><li>REST API integration</li></ul></div>
+      <div><h3>Tools &amp; other</h3><ul><li>GitHub</li><li>Bitbucket</li><li>VS Code</li><li>PHP (CodeIgniter)</li><li>VB 6.0</li><li>MS SQL Server</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="experience">
+  <div class="wrap">
+    <h2>Experience</h2>
+    <p class="sub">Most recent first.</p>
+    <ol class="timeline">
+      <li class="current">
+        <div class="when">Dec 2023 – Present · <span data-from="2023-12"></span></div>
+        <h3>Programmer Analyst</h3>
+        <div class="org">APA Engineering</div>
+        <ul class="points">
+          <li>Built ESG data-collection modules with React, React Hook Form, Zod and Material UI.</li>
+          <li>Implemented dynamic forms, cascading dropdowns and API integrations.</li>
+          <li>Set up secure authentication and authorization with Azure MSAL.</li>
+          <li>Developed back-end services in Node.js, Express, JWT and PostgreSQL.</li>
+        </ul>
+        <details class="more"><summary>Data and compliance work</summary>
+          <ul class="points">
+            <li>Collected ESG data from multiple stakeholders.</li>
+            <li>Validated data accuracy with automated scripts and manual checks.</li>
+            <li>Ensured disclosures were complete and aligned with GRI, SASB and CDP frameworks.</li>
+          </ul>
+        </details>
+      </li>
+      <li>
+        <div class="when">Apr 2022 – Sep 2023 · 1 yr 6 mos</div>
+        <h3>Junior Software Developer</h3>
+        <div class="org">Constient Global Solutions Pvt Ltd</div>
+        <ul class="points">
+          <li>Delivered three projects: a leave management system, a telehealth admin web app and a travel booking module.</li>
+          <li>Worked across React + TypeScript front ends, Node/Express and PHP back ends, and Razorpay payments.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="when">Sep 2021 – Jan 2022 · 4 mos</div>
+        <h3>Trainee Software Developer</h3>
+        <div class="org">NINOS IT Solution Pvt Ltd, Chennai</div>
+        <ul class="points">
+          <li>Built the front end of Skill Tally, a skill assessment and certification platform, with React, Redux and React Router.</li>
+        </ul>
+      </li>
+      <li>
+        <div class="when">Dec 2018 – Aug 2020 · 1 yr 8 mos</div>
+        <h3>Junior Software Developer</h3>
+        <div class="org">Ace Software Solution Pvt Ltd, Chennai</div>
+        <ul class="points">
+          <li>Created, modified and customized screens for ERP products in VB 6.0 with MS SQL Server.</li>
+          <li>Handled email support and client-side application maintenance.</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="block" id="projects">
+  <div class="wrap">
+    <h2>Projects</h2>
+    <p class="sub">Filter by technology to see where I've used it.</p>
+    <div class="filters" role="group" aria-label="Filter projects by technology" id="filters"></div>
+    <div class="projects" id="projectList"></div>
+    <p class="empty" id="emptyMsg" hidden>No projects use that technology. Choose “All” to see everything.</p>
+  </div>
+</section>
+
+<section class="block" id="education">
+  <div class="wrap">
+    <h2>Education</h2>
+    <div class="edu">
+      <div><b>M.Sc (CS &amp; IT)</b><span>MTNC College, Madurai · 2017</span></div>
+      <div><b>B.Sc</b><span>Voorhees College, Vellore · 2012</span></div>
+      <div><b>Higher Secondary (12th)</b><span>GBHSS, Walajapet · 2007</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <h2>Let's work together</h2>
+      <p>I'm open to full-stack and front-end roles. The quickest way to reach me is email.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:sarankumars63538@gmail.com">Email me</a>
+        <button class="btn" id="copyEmail" type="button">Copy email address</button>
+        <a class="btn" href="https://github.com/Saran871" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>© <span id="yr"></span> Sarankumar S · Chennai, India</footer>
+
+<script>
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Live duration for current role + total experience
+  function months(from, to){ return (to.getFullYear()-from.getFullYear())*12 + (to.getMonth()-from.getMonth()); }
+  function fmt(m){ const y=Math.floor(m/12), mo=m%12; return [y?y+' yr'+(y>1?'s':''):'', mo?mo+' mo'+(mo>1?'s':''):''].filter(Boolean).join(' '); }
+  const now = new Date();
+  document.querySelectorAll('[data-from]').forEach(el=>{
+    const [y,m]=el.dataset.from.split('-').map(Number);
+    el.textContent = fmt(months(new Date(y,m-1,1), now)+1);
+  });
+  const total = 21 + 4 + 18 + (months(new Date(2023,11,1), now)+1);
+  const yrs = Math.floor(total/12) + '+ years';
+  document.getElementById('yearsFact').textContent = yrs;
+  document.querySelectorAll('.input')[2].dataset.text = yrs + ', since 2018';
+
+  // Hero form auto-fill (the one orchestrated motion moment)
+  const inputs=[...document.querySelectorAll('.formcard .input')];
+  const chips=[...document.querySelectorAll('#heroChips .chip')];
+  const progress=document.getElementById('progress');
+  const submit=document.getElementById('heroSubmit');
+  let filled=0;
+  const setProgress=()=>progress.textContent=filled+' of 4 fields';
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  async function run(){
+    for(const inp of inputs){
+      const val=inp.querySelector('.val'), text=inp.dataset.text;
+      if(reduce){ val.textContent=text; inp.classList.add('done'); filled++; continue; }
+      inp.classList.add('typing');
+      const caret=document.createElement('span'); caret.className='caret';
+      for(let i=1;i<=text.length;i++){ val.textContent=text.slice(0,i); val.appendChild(caret); await wait(38); }
+      caret.remove(); inp.classList.remove('typing'); inp.classList.add('done'); filled++; setProgress();
+      await wait(180);
+    }
+    for(const c of chips){ c.classList.add('on'); if(!reduce) await wait(110); }
+    filled=4; setProgress(); submit.classList.add('ready');
+  }
+  run();
+
+  // Projects
+  const projects=[
+    {name:'ESG Platform', org:'APA Engineering', when:'2023 – Present', featured:true,
+     desc:'A platform for collecting Environmental, Social and Governance data from stakeholders and checking it against GRI, SASB and CDP reporting frameworks.',
+     points:['Dynamic, schema-validated data-collection forms with cascading dropdowns','Azure MSAL sign-in with role-based authorization','Automated validation scripts alongside manual review'],
+     stack:['React','TypeScript','Redux','React Hook Form','Zod','Material UI','Axios','Node.js','Express','PostgreSQL','JWT','Azure MSAL']},
+    {name:'Leave Management System', org:'Constient Global Solutions', when:'2022 – 2023',
+     desc:'Internal tool for applying for and approving sick leave, casual leave, work from home and permission, with separate admin and user modules.',
+     stack:['React','Redux','Axios','Bootstrap','Node.js','Express','MySQL','JWT']},
+    {name:'Council Admin Web', org:'Constient Global Solutions', when:'2022 – 2023',
+     desc:'Telehealth admin app with one-to-one video calling and chat for doctors, patients and receptionists.',
+     stack:['React','TypeScript','Redux','React Router','Axios','Material UI','Bootstrap']},
+    {name:'Voyage Kart (Reward Kart)', org:'Constient Global Solutions', when:'2022 – 2023',
+     desc:'Flight and hotel booking module with Razorpay payment gateway integration.',
+     stack:['JavaScript','jQuery','Bootstrap','PHP','CodeIgniter','Razorpay']},
+    {name:'Skill Tally', org:'NINOS IT Solution', when:'2021 – 2022',
+     desc:'Skill assessment and certification platform with admin and user modules.',
+     stack:['React','Redux','React Router','Axios','Bootstrap']},
+    {name:'ERP product screens', org:'Ace Software Solution', when:'2018 – 2020',
+     desc:'Screen creation, customization and maintenance for ERP products, plus client support.',
+     stack:['VB 6.0','MS SQL Server']}
+  ];
+  const filterTags=['All','React','TypeScript','Redux','Node.js','PostgreSQL','MySQL','Material UI','PHP'];
+  const list=document.getElementById('projectList');
+  const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  list.innerHTML=projects.map(p=>`
+    <article class="project${p.featured?' featured':''}" data-stack="${esc(p.stack.join('|'))}">
+      <div>
+        <h3>${esc(p.name)}</h3>
+        <div class="meta">${esc(p.org)} · ${esc(p.when)}</div>
+        <p>${esc(p.desc)}</p>
+        ${p.points?'<ul>'+p.points.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':''}
+      </div>
+      <div class="stack">${p.stack.map(s=>'<span>'+esc(s)+'</span>').join('')}</div>
+    </article>`).join('');
+
+  const filters=document.getElementById('filters');
+  filters.innerHTML=filterTags.map((t,i)=>`<button type="button" aria-pressed="${i===0}" data-tag="${esc(t)}">${esc(t)}</button>`).join('');
+  filters.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    filters.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    const tag=b.dataset.tag; let shown=0;
+    list.querySelectorAll('.project').forEach(card=>{
+      const match=tag==='All'||card.dataset.stack.split('|').includes(tag);
+      card.hidden=!match; if(match) shown++;
+    });
+    document.getElementById('emptyMsg').hidden=shown>0;
+  });
+
+  // Active nav link
+  const links=[...document.querySelectorAll('.nav ul a')];
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+en.target.id));
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  document.querySelectorAll('main section[id]').forEach(s=>obs.observe(s));
+
+  // Copy email
+  const toast=document.getElementById('toast');
+  document.getElementById('copyEmail').addEventListener('click',async()=>{
+    const email='sarankumars63538@gmail.com';
+    try{ await navigator.clipboard.writeText(email); toast.textContent='Email address copied.'; }
+    catch(err){ toast.textContent='Copy isn\'t available here. The address is '+email; }
+  });
+})();
+</script>
+</body>
+</html>
